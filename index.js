@@ -3,6 +3,9 @@ var express = require("express");
 var app = express();
 var dao = require("./helpers/dao.js");
 var fs = require("fs");
+var blinkHelper = require("./helpers/LEDBlink.js");
+
+blinkHelper.initiate(5000);
 
 app.use("/public", express.static(__dirname + pathSeparator + "public" + pathSeparator));
 
@@ -53,5 +56,8 @@ dao.updateFile("./logs/log.txt", "This is some Random Content\n", (data) => {
         // console.log(contents)
     });
 });
+
+
+
 
 app.listen(3000);
