@@ -5,12 +5,22 @@
     </head>
     <body>
         <h2>Welcome back :D</h2>
+	<div class = "log-files-container">
+	</div>
     </body>
 
     <script>
         get("/logs")
             .then((response) => {
                 console.log(response);
+		response.logs.map((filename) => {
+                    var logFilesContainer = document.getElementsByClassName("log-files-container")[0];
+		    var logFile = document.createElement("div");
+		    var logFileText = document.createTextNode(filename);
+
+		    logFile.appendChild(logFileText);
+		    logFilesContainer.appendChild(logFile);
+		});
             })
             .catch(() => {
                 console.error("Error in /logs get request.");
@@ -23,5 +33,6 @@
             .catch(() => {
                 console.error("Error in /visit post request.");
             });
+
     </script>
 </html>
