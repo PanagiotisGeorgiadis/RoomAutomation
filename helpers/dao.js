@@ -52,11 +52,17 @@ const logVisit = (content) => {
     });
 }
 
+const logDoorStateChange = (content) => {
+    updateFile(__dirname + "/../logs/doorLog.txt", (content + "\n"), () => {});
+
+}
+
 
 module.exports = {
     getFileContents,
     createFile,
     updateFile,
     getLogFiles,
-    logVisit
+    logVisit,
+    logDoorStateChange
 }

@@ -1,4 +1,5 @@
 var Gpio = require("onoff").Gpio;
+var dao = require("./dao.js");
 
 const blinkLED = (LED) => {
     if (LED.readSync() === 0)
@@ -32,11 +33,13 @@ const initiate = (duration) => {
     doorSwitch.watch((err,value) => {
         if (err)
             console.log("Error in doorSwitch");
-		
+
 	if (value === 0) {
-            console.log("Door Opened!");
+            //console.log("Door Opened!");
+	    dao.logDoorStateChange("Door Opened!" + new Date(Date.now()) + "\n"); 
 	} else {
-            console.log("Door Closed!");
+            //console.log("Door Closed!");
+	    dao.logDoorStateChange("Door Closed!" + new Date(Date.now()) + "\n"); 
 	}
     });
     
