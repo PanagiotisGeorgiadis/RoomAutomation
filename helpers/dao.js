@@ -4,6 +4,7 @@ const getFileContents = (srcPath, callback) => {
     fs.readFile(srcPath, 'utf-8', (err, data) => {
         if (err) {
             throw err;
+            return;
         }
 
         callback(data);
@@ -14,8 +15,8 @@ const createFile = (destPath, content, callback) => {
     fs.writeFile(destPath, content, (err) => {
         if (err) {
             throw err;
+            return;
         }
-
         callback();
     });
 };
@@ -45,11 +46,17 @@ const getLogFiles = (fn) => {
     });
 }
 
+const getVisitorFile = (fn) => {
+    getFileContents("./logs/visitLog.txt", fn);
+}
 
-const logVisit = (content) => {
-    updateFile("./logs/visitLog.txt", (content + "\n"), () => {
-        console.log("Visit logged");
-    });
+const getDoorSwitchLog = (fn) => {
+    getFileContents("./logs/doorLog.txt", fn);
+}
+
+
+const logVisit = (content, fn) => {
+    updateFile("./logs/visitLog.txt", (content + "\n"), fn);
 }
 
 const logDoorStateChange = (content) => {
@@ -59,10 +66,12 @@ const logDoorStateChange = (content) => {
 
 
 module.exports = {
-    getFileContents,
+    // getFileContents,
     createFile,
     updateFile,
     getLogFiles,
     logVisit,
-    logDoorStateChange
+    logDoorStateChange,
+    getVisitorFile,
+    getDoorSwitchLog
 }

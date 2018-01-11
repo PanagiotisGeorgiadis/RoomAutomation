@@ -3,9 +3,9 @@ var express = require("express");
 var app = express();
 var dao = require("./helpers/dao.js");
 var fs = require("fs");
-var blinkHelper = require("./helpers/LEDBlink.js");
 
-blinkHelper.initiate(5000);
+// var blinkHelper = require("./helpers/LEDBlink.js");
+// blinkHelper.initiate(5000);
 
 app.use("/public", express.static(__dirname + pathSeparator + "public" + pathSeparator));
 
@@ -30,15 +30,31 @@ app.get("/", function(request, response, next) {
 });
 
 
-app.get("/logs", function (request, response, next) {
+app.get("/logFiles", function (request, response, next) {
     dao.getLogFiles((logs) => {
         response.send({logs});
     });
 });
 
 
-app.post("/visit", (request, response) => {
-    dao.logVisit(new Date(Date.now()));
+app.post("/visitLog", (request, response) => {
+    var now = new Date(Date.now());
+    dao.logVisit(now, () => {
+        dao.getVisitorFile((visits) => {
+            response.send(
+                { visits : visits.split("\n") }
+            );
+        });
+    });
+});
+
+
+app.get("/doorSwitchLog", (request, response) => {
+    dao.getDoorSwitchLog((lines) => {
+        response.send(
+            { lines : lines.split("\n") }
+        );
+    });
 });
 
 
@@ -51,11 +67,11 @@ app.post("/visit", (request, response) => {
 
 // setInterval(dao.backupLogs());
 
-dao.updateFile("./logs/log.txt", "This is some Random Content\n", (data) => {
-    dao.getFileContents("./logs/log.txt", (contents) => {
-        // console.log(contents)
-    });
-});
+// dao.updateFile("./logs/log.txt", "This is some Random Content\n", (data) => {
+//     dao.getFileContents("./logs/log.txt", (contents) => {
+//         // console.log(contents)
+//     });
+// });
 
 
 
