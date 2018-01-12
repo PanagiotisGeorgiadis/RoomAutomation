@@ -3,9 +3,9 @@ var express = require("express");
 var app = express();
 var dao = require("./helpers/dao.js");
 var fs = require("fs");
+var blinkHelper = require("./helpers/LEDBlink.js");
 
-// var blinkHelper = require("./helpers/LEDBlink.js");
-// blinkHelper.initiate(5000);
+blinkHelper.initiate(5000);
 
 app.use("/public", express.static(__dirname + pathSeparator + "public" + pathSeparator));
 
@@ -19,7 +19,7 @@ app.get("/", function(request, response, next) {
         }
     }
 
-    var filename = "index.html";
+    var filename = "./public/index.html";
     response.sendFile(filename, options, function(err) {
         if(err) {
             next(err);
